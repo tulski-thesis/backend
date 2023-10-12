@@ -1,11 +1,11 @@
 {
-  "name": "@tulski/server",
+  "name": "@tulski/backend",
   "version": "0.0.1",
   "description": "A starter for Medusa projects.",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "license": "MIT",
   "git": {
-    "url": "https://github.com/tulski-thesis/server.git"
+    "url": "https://github.com/tulski-thesis/backend.git"
   },
   "keywords": [
     "sqlite",
