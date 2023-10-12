@@ -35,18 +35,13 @@ const plugins = [
   `medusa-fulfillment-manual`,
   `medusa-payment-manual`,
   {
-    resolve: `@medusajs/file-local`,
-    options: {
-      upload_dir: "uploads",
-    },
-  },
-  {
     resolve: "@medusajs/admin",
     /** @type {import('@medusajs/admin').PluginOptions} */
     options: {
-      autoRebuild: true,
+      autoRebuild: false,
+      serve: process.env.ADMIN_PANEL_SERVE === "true",
       develop: {
-        open: process.env.OPEN_BROWSER !== "false",
+        open: process.env.ADMIN_PANEL_OPEN_BROWSER === "true",
       },
     },
   },
@@ -58,9 +53,12 @@ const modules = {};
 const projectConfig = {
   jwtSecret: process.env.JWT_SECRET,
   cookieSecret: process.env.COOKIE_SECRET,
+  admin_cors: ADMIN_CORS,
   store_cors: STORE_CORS,
   database_url: DATABASE_URL,
-  admin_cors: ADMIN_CORS,
+  database_extra: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED === "false"
+      ? { ssl: { rejectUnauthorized: false } }
+      : {},
 };
 
 /** @type {import('@medusajs/medusa').ConfigModule} */
