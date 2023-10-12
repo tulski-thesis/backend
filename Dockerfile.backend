@@ -39,7 +39,7 @@ COPY --chown=server:nodejs .env.production ./.env.production
 COPY --chown=server:nodejs medusa-config.js ./medusa-config.js
 COPY --chown=server:nodejs index.js ./index.js
 
-RUN mkdir /app/uploads
+RUN mkdir -m 777 /app/uploads
 
 USER server
 

@@ -1,4 +1,4 @@
-Dockerfile
+Dockerfile.backend
 .dockerignore
 node_modules
 npm-debug.log
@@ -8,3 +8,4 @@ LICENSE
 .git
 .github
 data
+build
