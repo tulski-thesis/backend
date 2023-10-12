@@ -4,6 +4,9 @@
   "description": "A starter for Medusa projects.",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "license": "MIT",
+  "git": {
+    "url": "https://github.com/tulski-thesis/server.git"
+  },
   "keywords": [
     "sqlite",
     "postgres",
