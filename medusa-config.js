@@ -45,6 +45,16 @@ const plugins = [
       },
     },
   },
+  {
+    resolve: `medusa-plugin-prometheus`,
+    options: {
+      uriPath: "/metrics",
+      authentication: true,
+      onAuthenticate: (req, username, password) => {
+        return username === process.env.PROMETHEUS_USERNAME && password === process.env.PROMETHEUS_PASSWORD
+      },
+    },
+  },
 ];
 
 const modules = {};
