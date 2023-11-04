@@ -47,8 +47,9 @@ const plugins = [
   },
   {
     resolve: `medusa-plugin-prometheus`,
+    /** @type {import('medusa-plugin-prometheus/types').SwaggerStats} */
     options: {
-      uriPath: "/metrics",
+      uriPath: "/swagger-stats",
       authentication: true,
       onAuthenticate: (req, username, password) => {
         return username === process.env.PROMETHEUS_USERNAME && password === process.env.PROMETHEUS_PASSWORD
