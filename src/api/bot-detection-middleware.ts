@@ -4,12 +4,16 @@ const BOT_ENABLED = process.env.BOT_ENABLED === 'true'
 const BOT_API_URL = process.env.BOT_API_URL || 'http://localhost:3000'
 const BOT_HEADER = process.env.BOT_HEADER || 'x-bot-id';
 
-const cache = new Map<string, boolean>();
+const cache = new Map<string, Promise<Result>>();
 
 export const botDetectionMiddleware = async (
     req: MedusaRequest,
     res: MedusaResponse,
     next: MedusaNextFunction) => {
+    if (req.method === 'OPTIONS') {
+        next()
+        return
+    }
 
     const logger = req.scope.resolve<Logger>('logger')
     const botId = req.headers[BOT_HEADER];
@@ -28,7 +32,7 @@ export const botDetectionMiddleware = async (
     }
 
     try {
-        const isBot = getCachedResult(botId) || await getFetchedResult(botId)
+        const isBot = await getResult(botId)
         if (isBot) {
             logger.debug(`Bot detected: ${botId}`)
             res.status(403).send({error: 'Bot detected'})
@@ -37,18 +41,24 @@ export const botDetectionMiddleware = async (
     } catch (e) {
         logger.error(`Error fetching bot result: ${e}`)
         res.sendStatus(500)
+        return
     }
 
     next()
 }
 
-const getCachedResult = (id: string) => cache.get(id)
+const getResult = async (id: string): Promise<boolean> => {
+    const result = await cachePromises(id)
+    return result.bot.result === 'bad_bot'
+}
 
-const getFetchedResult = async (id: string) => {
-    const result = await fetchBotResult(id)
-    const isBot = result.bot.result !== 'not_detected'
-    cache.set(id, isBot)
-    return isBot
+const cachePromises = async (id: string) => {
+    const cachedPromise = cache.get(id)
+    if (typeof cachedPromise !== 'undefined') {
+        return cachedPromise
+    }
+    cache.set(id, fetchBotResult(id))
+    return cache.get(id)
 }
 
 const fetchBotResult = async (botId: string): Promise<Result> => {

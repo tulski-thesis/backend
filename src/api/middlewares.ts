@@ -5,7 +5,6 @@ export const config: MiddlewaresConfig = {
     routes: [
         {
             matcher: "/store/*",
-            method: ["GET", "POST", "PUT", "PATCH", "DELETE"],
             middlewares: [botDetectionMiddleware],
         },
     ],
