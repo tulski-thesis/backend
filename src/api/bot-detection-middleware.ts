@@ -15,14 +15,14 @@ export const botDetectionMiddleware = async (
     const botId = req.headers[BOT_HEADER];
 
     if (!BOT_ENABLED) {
-        logger.debug(`Bot detection disabled. Skipping.`)
+        logger.debug(`Bot detection disabled. Skipping verification for id: ${botId}`)
         next()
         return
     }
 
-    logger.debug(`Verifying bot id: ${botId}`)
+    logger.debug(`Verifying id: ${botId}`)
     if (!botId || typeof botId !== 'string') {
-        logger.debug(`No bot id provided`)
+        logger.debug(`No bot id provided: ${botId}, type: ${typeof botId}`)
         res.sendStatus(403)
         return
     }
